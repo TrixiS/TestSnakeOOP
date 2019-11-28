@@ -36,7 +36,8 @@ namespace TestSnake
             TextSnakeHead snakeHead = new TextSnakeHead
             {
                 FragmentChar = '*',
-                Position = new Numeric2D(6, 9)
+                Position = new Numeric2D(6, 9),
+                Health = 100
             };
 
             TextSnake snake = new TextSnake(snakeHead, 2, snakeFragmentChar);
@@ -99,9 +100,11 @@ namespace TestSnake
                         ground.ToDraw.Remove(fragment);
                         break;
                     }
-                    else if (snake.Fragments.Contains(fragment) && fragment.Position == snake.Head.Position)
+                    else if (snake.Fragments.Contains(fragment) && fragment.Position == snake.Head.Position && fragment != snake.Head)
                     {
                         snake.Head.Health = 0;
+
+                        Console.WriteLine("DEAD");
 
                         break;
                     }
