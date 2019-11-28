@@ -104,8 +104,6 @@ namespace TestSnake
                     {
                         snake.Head.Health = 0;
 
-                        Console.WriteLine("DEAD");
-
                         break;
                     }
                 }
