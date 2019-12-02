@@ -14,13 +14,13 @@ namespace TestSnake
         private static void Numeric2DTest()
         {
             Numeric2D numeric = new Numeric2D(5, 5);
-            Numeric2D numericRandonIn = numeric.RandomIn();
+            Numeric2D numericRandomIn = numeric.RandomIn();
 
             TextGround ground = new TextGround('.', numeric.X, numeric.Y);
-            TextGround randomInGround = new TextGround('.', numericRandonIn.X, numericRandonIn.Y);
+            TextGround randomInGround = new TextGround('.', numericRandomIn.X, numericRandomIn.Y);
 
             Console.WriteLine(numeric.ToString());
-            Console.WriteLine(numericRandonIn.ToString());
+            Console.WriteLine(numericRandomIn.ToString());
 
             Console.WriteLine(ground.ToString());
             Console.WriteLine(randomInGround.ToString());
@@ -70,12 +70,16 @@ namespace TestSnake
 
             const char snakeFragmentChar = '=';
             const char snakeHeadFragmentChar = '*';
-            const char fruitFragmetChar = 'A';
+            const char fruitFragmentChar = 'A';
             const char snakeTextGroundChar = '.';
+
+            const decimal speedMultiplier = 0.75M;
+            const int groundBoundX = 50;
+            const int groundBoundY = 25;
             
             decimal speedDelay = 1000;
 
-            Numeric2D groundBounds = new Numeric2D(50, 25);
+            Numeric2D groundBounds = new Numeric2D(groundBoundX, groundBoundY);
             SnakeTextGround ground = new SnakeTextGround(snakeTextGroundChar, groundBounds.X, groundBounds.Y);
 
             TextSnakeHead snakeHead = new TextSnakeHead
@@ -88,7 +92,7 @@ namespace TestSnake
             var fruit = new TextSnakeFragment
             {
                 Position = groundBounds.RandomIn(),
-                FragmentChar = fruitFragmetChar
+                FragmentChar = fruitFragmentChar
             };
 
             TextSnake snake = new TextSnake(snakeHead, 2, snakeFragmentChar);
@@ -163,7 +167,7 @@ namespace TestSnake
                         snake.Fragments.Add(newFragmentToDraw);
                         ground.ToDraw.Add(newFragmentToDraw);
 
-                        speedDelay *= 0.75M;
+                        speedDelay *= speedMultiplier;
 
                         break;
                     }
