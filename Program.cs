@@ -6,9 +6,9 @@ namespace TestSnake
 {
     class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            SnakeTest();
+            await SnakeTestAsync();
         }
 
         private static void Numeric2DTest()
@@ -34,36 +34,39 @@ namespace TestSnake
             Back
         }
 
-        private static SnakeDirection Direction = SnakeDirection.Forward;
+        private static SnakeDirection direction = SnakeDirection.Forward;
 
         private static async void HandleConsoleInputAsync()
         {
             await Task.Yield();
 
-            ConsoleKey handledKey = Console.ReadKey().Key;
-            SnakeDirection newDirection = Direction;
-
-            switch (handledKey)
+            while (true)
             {
-                case ConsoleKey.UpArrow:
-                    newDirection = SnakeDirection.Back;
-                    break;
-                case ConsoleKey.DownArrow:
-                    newDirection = SnakeDirection.Forward;
-                    break;
-                case ConsoleKey.RightArrow:
-                    newDirection = SnakeDirection.Right;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    newDirection = SnakeDirection.Left;
-                    break;
-            }
+                ConsoleKey handledKey = Console.ReadKey().Key;
+                SnakeDirection newDirection = direction;
 
-            if (newDirection != Direction)
-                Direction = newDirection;
+                switch (handledKey)
+                {
+                    case ConsoleKey.UpArrow:
+                        newDirection = SnakeDirection.Back;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        newDirection = SnakeDirection.Forward;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        newDirection = SnakeDirection.Right;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        newDirection = SnakeDirection.Left;
+                        break;
+                }
+
+                if (newDirection != direction)
+                    direction = newDirection;
+            }
         }
 
-        private static void SnakeTest()
+        private static async Task SnakeTestAsync()
         {
             Console.Title = "Snake";
             Console.CursorVisible = false;
@@ -110,11 +113,11 @@ namespace TestSnake
                 Console.WriteLine($"Speed - {Decimal.Round(1 / speedDelay, 3)}");
             }
 
+            HandleConsoleInputAsync();
+
             while (snake.Head.Health > 0)
             {
-                HandleConsoleInputAsync();
-
-                switch (Direction)
+                switch (direction)
                 {
                     case SnakeDirection.Back:
                         newSnakePos.Y--;
@@ -176,7 +179,7 @@ namespace TestSnake
                 Console.WriteLine(ground.ToString());
                 showInformation();
 
-                Thread.Sleep((int)Math.Ceiling(speedDelay));
+                await Task.Delay((int)Math.Ceiling(speedDelay));
             }
             
             Console.Clear();
